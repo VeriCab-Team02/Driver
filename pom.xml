@@ -12,7 +12,7 @@
 	<artifactId>CabApplication</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CabApplication</name>
-	<description>Demo project for deploying into Tomcat</description>
+	<description>Demo project for car application</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -72,10 +72,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-cassandra</artifactId>
-		</dependency>
+		
 	</dependencies>
 
 	<build>

@@ -1,11 +1,16 @@
-package com.example.model;
+package com.example.demo.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -17,10 +22,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Component 
 @Entity 
-@Table("vericab_car")
+@Table(name="vericab_car")
 public class CarModel {
 
-	@PrimaryKey
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
 	private String manufacturer;  //Eg. Toyota
@@ -31,10 +37,12 @@ public class CarModel {
 	private Integer noOfSeaters;	//4 , 6 seaters
 	private String type; //Hatchback or Sedan class
 	
-	@NotEmpty
-	private Double ratePerKm;
-	
 //	@OneToOne(cascade = CascadeType.ALL)
 //  @JoinColumn(name = "geoLocation", referencedColumnName = "id")
 //	private CurrentLocation location;
+	
+	@NotEmpty
+	private Double ratePerKm;
+	
 }
+

@@ -1,9 +1,11 @@
-package com.example.model;
+package com.example.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -15,10 +17,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Component 
 @Entity 
-@Table("vericab_location")
+@Table(name="vericab_location")
 public class CurrentLocation {
 
-	@PrimaryKey
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
 	private Double latitude;
