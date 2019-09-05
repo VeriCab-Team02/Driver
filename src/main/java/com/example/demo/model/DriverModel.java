@@ -34,7 +34,7 @@ public class DriverModel {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long driverId;
 
     @NotNull
     private String name;  //First name+Last name

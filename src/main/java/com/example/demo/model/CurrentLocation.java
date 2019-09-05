@@ -22,7 +22,7 @@ public class CurrentLocation {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long locationId;
 	
 	private Double latitude;
 	private Double	 longitude;
