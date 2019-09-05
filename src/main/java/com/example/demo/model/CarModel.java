@@ -39,11 +39,11 @@ public class CarModel {
 	private String type; //Hatchback or Sedan class
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "driverId", referencedColumnName = "id")
-	private DriverModel driver;
+	@JoinColumn(name = "driverId")
+	private DriverModel driver ;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "geoLocation", referencedColumnName = "id")
+    @JoinColumn(name = "locationId")
 	private CurrentLocation location;
 	
 	@NotEmpty
