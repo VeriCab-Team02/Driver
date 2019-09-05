@@ -15,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,13 +41,15 @@ public class DriverModel {
     private String name;  //First name+Last name
     private String gender;  //To be entered as 'Male, 'Female', 'Transgender' only
     private Double rating;   //On a scale of 5
+    private Integer totalNoOfRatings;
     
     @NotEmpty 
     @Email
     private String email; 
     
-    @NotEmpty(message = "Phone Number can not be empty..!")
-    private Long phoneNumber;
+    @NotNull(message = "Phone Number can not be empty..!")
+    @Pattern(regexp="(^$|[0-9]{10})")
+    private String phoneNumber;
     
     @DateTimeFormat(pattern="MM/dd/yyyy") 
     @NotNull 
@@ -62,13 +65,9 @@ public class DriverModel {
     @NotNull(message = "Password can not be null..!")
     private String password;
     
-    @NotNull
     private String driverPhotoLocation;
     
     @NotEmpty
     private String licenseNumber; //Eg. MH-4089503248
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "geoLocation", referencedColumnName = "id")
-    private CurrentLocation location;
 }
