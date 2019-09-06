@@ -21,9 +21,9 @@ public class DriverService {
 		return driverRepo.findAll();
 	}
 
-	public DriverModel findById(long id) {
+	public DriverModel findById(Long driverId) {
 		
-		return driverRepo.findById(id).get();
+		return driverRepo.findById(driverId).get();
 	}
 	
 	public void deleteDriverById(Long id) throws IllegalArgumentException{

@@ -6,11 +6,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,10 +32,12 @@ import com.example.demo.services.DriverService;
 public class DriverController {
 
 	private static final String UPLOAD_FOLDER = "C:/Users/verizon/Desktop/Vicky/SpringCore/CabApplication/src/main/resources/images";
-	private static Integer picId = 0;
 	
 	@Autowired
 	private DriverService service;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/index")
 	public String greet() {
@@ -40,29 +45,35 @@ public class DriverController {
 		return "Car Homepage";
 	}
 	
+	
+	//To be posted as form value only
 	@PostMapping(value = "/addDriver", produces="application/json", consumes = { "multipart/form-data" })
 	public String singleDriverUpload(@RequestParam("file") MultipartFile file,
 			@Valid @ModelAttribute DriverModel entity) throws IOException {
 
-        // Creating the directory to store file 
+        // Creating the directory if doesn't exist to store file 
         File dir = new File(UPLOAD_FOLDER); 
         if (!dir.exists()) 
             dir.mkdirs();    
         
+        //RandomNumber for picture
+        // Generate random integers in range 0 to 999 
+        Integer randInt = new Random().nextInt(10000);
+               
         // Create the file on server 
-        File serverFile = new File(dir + File.separator + picId.toString()+file.getOriginalFilename()); 
-        picId++;
+        File serverFile = new File(dir + File.separator + randInt.toString()+file.getOriginalFilename()); 
         
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile)); 
         stream.write(file.getBytes());
         stream.close(); 
         
-        //System.out.println("Server File Location=" + serverFile.getAbsolutePath());
-        
+        //Set default values
         entity.setDriverPhotoLocation(serverFile.getAbsolutePath().toString());
         entity.setRating(0.0);
         entity.setTotalNoOfRatings(0);
 
+        //Encode the password
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         
         service.save(entity);
         
@@ -70,30 +81,54 @@ public class DriverController {
 	}
 	
 
-	@GetMapping(value = "/viewDrivers", produces="application/json" , consumes="application/json")
+	@GetMapping(value = "/viewDrivers", produces="application/json")
 	public List<DriverModel> findAll() {
 		
 		List<DriverModel> driversList = new ArrayList<>();
 		
 		this.service.findAll().forEach(eachObject -> {
-			driversList.add(eachObject);
-		});
+			
+			Calendar calendar = Calendar.getInstance();
+		    calendar.setTime(eachObject.getDob());
+		    calendar.add(Calendar.HOUR_OF_DAY, 6);
+		    eachObject.setDob(calendar.getTime());
+			driversList.add(eachObject);});
 		
 		return driversList;
 	}
 	
-	@PostMapping(value = "/updateDriver", produces="application/json" , consumes="application/json")
-	public DriverModel updateBooking(@RequestParam("file") MultipartFile file,
-			@Valid @ModelAttribute DriverModel driver ) {
-
-		return this.service.save(driver);
+	
+	//Post as JSON values only
+	@PostMapping(value = "/updateDriver/{id}", produces="application/json" , consumes="application/json")
+	public DriverModel updateDriver(@PathVariable Long id, @Valid @RequestBody DriverModel driver ) {
+		
+		//Can update name, gender, email,phone number, username, password, licenseNumber
+		DriverModel dm = this.service.findById(id);
+		driver.setDriverId(id);
+		driver.setDriverPhotoLocation(dm.getDriverPhotoLocation());
+		driver.setRating(dm.getRating());
+		
+		
+		driver.setTotalNoOfRatings(dm.getTotalNoOfRatings());
+		driver.setPassword(passwordEncoder.encode(driver.getPassword()));
+		
+		//updating the driver value
+		driver = this.service.save(driver);
+		
+		
+		//Correcting the date before sending the value
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(dm.getDob());
+	    calendar.add(Calendar.HOUR_OF_DAY, 6);  
+		driver.setDob(calendar.getTime());
+		return driver;
 	}
 	
 	
-	@GetMapping(value = "/viewDriver/{id}", produces="application/json" , consumes="application/json")
-	public DriverModel findById(@PathVariable long id) {	
+	@GetMapping(value = "/viewDriver/{driverId}", produces="application/json" , consumes="application/json")
+	public DriverModel findById(@PathVariable long driverId) {	
 		
-		return this.service.findById(id);
+		return this.service.findById(driverId);
 	}
 
 	@GetMapping(value = "/deleteDriver/{id}")
@@ -103,8 +138,8 @@ public class DriverController {
 		return "deleted";
 	}
 	
-	@PostMapping(value = "/rateDriver/{id}/{rating}", produces="application/json" , consumes="application/json")
-	public DriverModel rateBooking(@PathVariable long id, @PathVariable Integer rating) {
+	@PostMapping(value = "/rateDriver/{id}/{rating}", produces="application/json")
+	public DriverModel rateBooking(@PathVariable("id") Long id, @PathVariable("rating") Double rating) {
 
 		DriverModel driver = this.service.findById(id);
 		
@@ -119,5 +154,6 @@ public class DriverController {
 		
 		return this.service.save(driver);
 	}
+	
 	
 }

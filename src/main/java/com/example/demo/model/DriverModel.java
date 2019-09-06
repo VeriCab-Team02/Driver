@@ -48,12 +48,11 @@ public class DriverModel {
     private String email; 
     
     @NotNull(message = "Phone Number can not be empty..!")
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @Pattern(regexp="([0-9]{10})")
     private String phoneNumber;
     
-    @DateTimeFormat(pattern="MM/dd/yyyy") 
-    @NotNull 
-    @Past
+    @DateTimeFormat(pattern="MM/dd/yyyy")
+    @Past(message = "Date is not ..!")
     private Date dob;
     
     @Column(nullable = false)
