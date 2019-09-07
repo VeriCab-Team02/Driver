@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,23 +31,23 @@ public class CarModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
 	
+	@NotEmpty
 	private String manufacturer;  //Eg. Toyota
+	@NotEmpty
 	private String variant;  //Eg. Corolla variant of Toyota
 	
 	@Size(min=10, max=15)
 	private String registrationNumber;  //Eg. TN 27 CT 0595
 	private Integer noOfSeaters;	//4 , 6 seaters
+	
+	@NotEmpty
 	private String type; //Hatchback or Sedan class
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "driverId")
 	private DriverModel driver ;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "locationId")
-	private CurrentLocation location;
-	
-	@NotEmpty
+	@NotNull
 	private Double ratePerKm;
 	
 }

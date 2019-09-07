@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.model.CurrentLocation;
 import com.example.demo.model.DriverModel;
 import com.example.demo.services.DriverService;
 
@@ -39,10 +38,10 @@ public class DriverController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@GetMapping("/index")
+	@GetMapping("/driverIndex")
 	public String greet() {
 		System.out.println("Controller");
-		return "Car Homepage";
+		return "Driver Homepage";
 	}
 	
 	
@@ -77,7 +76,7 @@ public class DriverController {
         
         service.save(entity);
         
-		return "success";
+		return "Successfully added the driver";
 	}
 	
 
@@ -135,7 +134,7 @@ public class DriverController {
 	public String deleteById(@PathVariable long id) throws IllegalArgumentException{			
 		
 		this.service.deleteDriverById(id);
-		return "deleted";
+		return "deleted the driver";
 	}
 	
 	@PostMapping(value = "/rateDriver/{id}/{rating}", produces="application/json")

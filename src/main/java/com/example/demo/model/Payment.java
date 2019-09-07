@@ -17,14 +17,13 @@ import lombok.NoArgsConstructor;
 @Data
 @Component 
 @Entity 
-@Table(name="vericab_location")
-public class CurrentLocation {
+@Table(name="vericab_payment")
+public class Payment {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long paymentId;
 	
-	private Double latitude;
-	private Double longitude;
-	
+	private String customerName; 
+	private Double fare;
 }
