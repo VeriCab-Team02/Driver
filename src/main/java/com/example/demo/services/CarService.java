@@ -30,5 +30,10 @@ public class CarService {
 	
 		carRepo.deleteById(id);
 	}
+
+	public Iterable<CarModel> findByType(String type) {
+		
+		return carRepo.findByType(type);
+	}
 	
 }

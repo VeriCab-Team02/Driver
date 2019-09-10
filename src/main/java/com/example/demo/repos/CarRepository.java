@@ -9,4 +9,6 @@ import com.example.demo.model.CarModel;
 @Repository
 public interface CarRepository extends JpaRepository<CarModel, Long>{
 
+	Iterable<CarModel> findByType(String type);
+
 }

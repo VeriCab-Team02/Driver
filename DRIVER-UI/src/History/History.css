@@ -1,0 +1,57 @@
+.RidesStyle{
+    text-align: left;
+    margin-left: 150px;
+    font-size: larger;
+}
+
+
+.cardStyle {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.card:hover {
+    box-shadow: 10px 10px 5px grey;
+}
+
+.DateInfoStyle {
+    text-align: left;
+    font-size: smaller;
+    text-decoration: none;
+    color: grey;
+    font-style: italic;
+
+}
+
+.PassengerInfoStyle {
+    color: darkblue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+.FareInfoStyle {
+    text-align: right;
+    font-size: smaller;
+    text-decoration: none;
+    font-weight: bold;
+    color: grey;
+    font-style: italic;
+
+}
+
+.dot1 {
+    height:10px;
+    width: 10px;
+    background-color: green;
+    border-radius: 50%;
+    /* display: inline-block; */
+  }
+
+  .dot2 {
+    height:10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+    /* display: inline-block; */
+  }
